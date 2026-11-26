@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Бодит Мэргэжил ба Их Сургууль Сонголтын Судалгаа</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --primary-light: #eef2ff;
+      --secondary: #0ea5e9;
+      --accent: #10b981;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+      --danger: #dc2626;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+      background: linear-gradient(135deg, #f0f4ff 0%, #f8fafc 50%, #ecfeff 100%);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding: 20px 16px 48px;
+    }
+
+    .container { max-width: 920px; margin: 0 auto; }
+
+    .header { text-align: center; margin-bottom: 24px; }
+    .badge {
+      display: inline-block;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .header h1 { font-size: 1.85rem; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+    .header p { color: var(--muted); font-size: 0.98rem; }
+
+    /* Progress Bar */
+    .progress-wrap {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 22px;
+      display: none;
+    }
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--muted);
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .progress-steps span.active { color: var(--primary); }
+    .progress-steps span.done { color: var(--accent); }
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    /* Card */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      animation: fadeIn 0.35s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .section-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 6px; color: #0f172a; }
+    .section-desc { color: var(--muted); font-size: 0.94rem; margin-bottom: 22px; }
+
+    /* Intro */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin: 18px 0 22px;
+    }
+    .intro-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .intro-box .icon { font-size: 1.5rem; margin-bottom: 6px; }
+    .intro-box h3 { font-size: 0.98rem; margin-bottom: 4px; }
+    .intro-box p { font-size: 0.86rem; color: var(--muted); }
+
+    .form-section-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+    .form-section-box h3 {
+      font-size: 1rem;
+      margin-bottom: 14px;
+      color: #0f172a;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .form-row:last-child { margin-bottom: 0; }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.89rem;
+      margin-bottom: 6px;
+    }
+    .req { color: #ef4444; }
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.94rem;
+      background: #fff;
+      outline: none;
+    }
+    .input-group input:focus, .input-group select:focus { border-color: var(--primary); }
+    .input-group select:disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+
+    /* Step 1: Subject Table */
+    .sub-block {
+      margin-bottom: 24px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      background: #fff;
+    }
+    .sub-block h3 { font-size: 1.04rem; margin-bottom: 4px; color: #0f172a; }
+    .sub-block .hint { font-size: 0.86rem; color: var(--muted); margin-bottom: 14px; }
+
+    .subject-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .subject-row:last-child { border-bottom: none; }
+    .subject-row.unanswered { background: #fef2f2; border-radius: 8px; }
+    .subject-name { font-weight: 600; font-size: 0.94rem; min-width: 210px; }
+
+    .level-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .level-pills input { display: none; }
+    .level-pills label {
+      padding: 6px 11px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+    .level-pills label:hover { border-color: var(--primary); background: #f5f7ff; }
+    .level-pills input:checked + label {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    /* Checkboxes / Chip Grids */
+    .chip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 10px;
+    }
+    .chip-item input { display: none; }
+    .chip-item label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 11px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #334155;
+      background: #fff;
+      transition: all 0.15s ease;
+      height: 100%;
+    }
+    .chip-item label:hover { border-color: var(--primary); background: #f8faff; }
+    .chip-item input:checked + label {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.14);
+    }
+
+    /* Radio choice cards */
+    .choice-group { margin-bottom: 18px; }
+    .choice-title { font-weight: 700; font-size: 0.98rem; margin-bottom: 10px; color: #0f172a; }
+    .choice-list { display: grid; gap: 9px; }
+    .choice-card input { display: none; }
+    .choice-card label {
+      display: block;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      background: #fff;
+      transition: all 0.15s ease;
+    }
+    .choice-card label strong { display: block; color: #0f172a; margin-bottom: 2px; }
+    .choice-card label span { font-size: 0.84rem; color: var(--muted); }
+    .choice-card label:hover { border-color: var(--primary); background: #f8faff; }
+    .choice-card input:checked + label {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .choice-card input:checked + label strong { color: var(--primary-dark); }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 26px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-row-end { justify-content: flex-end; }
+    .btn {
+      padding: 13px 22px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.28);
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-secondary { background: #f1f5f9; color: var(--text); }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--muted); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Results */
+    .result-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, #0284c7 100%);
+      color: #fff;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .result-banner h2 { font-size: 1.5rem; margin-bottom: 6px; }
+    .result-banner p { opacity: 0.94; font-size: 0.95rem; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .banner-pill {
+      background: rgba(255, 255, 255, 0.18);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .career-card {
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 18px;
+      background: #fff;
+    }
+    .career-card.top-1 {
+      border-color: var(--primary);
+      background: linear-gradient(to right, #fafaff, #ffffff);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.08);
+    }
+    .career-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .career-rank {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .career-card.top-1 .career-rank { background: var(--primary); color: #fff; }
+    .career-title { font-size: 1.24rem; font-weight: 800; color: #0f172a; }
+    .match-pill {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+      font-weight: 800;
+      font-size: 0.98rem;
+      padding: 8px 14px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+    .career-desc { color: #334155; font-size: 0.94rem; margin-bottom: 14px; }
+
+    .reason-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 0.89rem;
+    }
+    .reason-box strong { color: #166534; display: block; margin-bottom: 4px; }
+    .reason-box ul { padding-left: 18px; color: #14532d; }
+
+    .warn-box {
+      background: var(--warning-bg);
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 11px 14px;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      color: #92400e;
+    }
+
+    .career-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.87rem;
+      margin-bottom: 12px;
+    }
+    .career-meta strong { display: block; color: #0f172a; margin-bottom: 2px; }
+
+    .uni-box {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+    .uni-box-title {
+      font-weight: 800;
+      font-size: 0.93rem;
+      color: #0369a1;
+      margin-bottom: 8px;
+    }
+    .uni-list { list-style: none; display: grid; gap: 6px; }
+    .uni-list li {
+      font-size: 0.88rem;
+      color: #0f172a;
+      padding-left: 14px;
+      position: relative;
+    }
+    .uni-list li::before {
+      content: "•";
+      color: #0284c7;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    .regional-box {
+      margin-top: 20px;
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+    .regional-box h3 { font-size: 1.04rem; color: #065f46; margin-bottom: 8px; }
+    .regional-box p, .regional-box li { font-size: 0.91rem; color: #064e3b; }
+    .regional-box ul { margin-top: 8px; padding-left: 18px; display: grid; gap: 4px; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .summary-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      font-size: 0.9rem;
+    }
+    .summary-box h3 { font-size: 1rem; margin-bottom: 10px; color: #0f172a; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .copy-toast { display: none; font-size: 0.88rem; color: #047857; font-weight: 700; }
+
+    @media (max-width: 680px) {
+      .card { padding: 18px; }
+      .form-row, .career-meta, .summary-grid { grid-template-columns: 1fr; }
+      .subject-row { flex-direction: column; align-items: flex-start; }
+      .header h1 { font-size: 1.45rem; }
+    }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .progress-wrap, .no-print { display: none !important; }
+      .card { box-shadow: none; border: none; padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <div class="badge">🇲🇳 Монголын ЕБС, ЭШ ба Хөдөлмөрийн зах зээлд суурилсан</div>
+    <h1>Бодит Мэргэжил ба Их Сургууль Сонголтын Судалгаа</h1>
+    <p>Таны дуртай хичээл, бодит сонирхол, чадвар болон оршин суугаа байршилд тулгуурлан тохирох мэргэжлийг тодорхойлно</p>
+  </header>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-steps">
+      <span id="stepLabel1">1. Бодит хичээл & ЭШ</span>
+      <span id="stepLabel2">2. Бодит сонирхол</span>
+      <span id="stepLabel3">3. Зан төлөв & Чадвар</span>
+      <span id="stepLabel4">4. Бодит үр дүн</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 0: Intro & Location -->
+  <div class="card screen active" id="screen0">
+    <h2 class="section-title">Эхлэхээс өмнө мэдээллээ оруулна уу 👋</h2>
+    <p class="section-desc">
+      Энэ судалгаа нь зөвхөн мөрөөдөл бус, чиний <strong>үнэхээр дуртай хичээл, чаддаг зүйл, бодит сонирхол</strong> болон Монгол Улсын хөдөлмөрийн зах зээлийн бодит эрэлт дээр үндэслэж тооцоолно.
+    </p>
+
+    <div class="intro-grid">
+      <div class="intro-box">
+        <div class="icon">📚</div>
+        <h3>1. ЕБС-ийн бодит 12 хичээл</h3>
+        <p>Дуртай хичээл, дүнгийн түвшин болон ЭШ өгөх хичээлээ сонгоно.</p>
+      </div>
+      <div class="intro-box">
+        <div class="icon">🛠️</div>
+        <h3>2. Бодит хобби & орчин</h3>
+        <p>Амьдрал дээр яг юу хийх дуртай, ямар орчинд ажиллах хүсэлтэйг тодорхойлно.</p>
+      </div>
+      <div class="intro-box">
+        <div class="icon">🏛️</div>
+        <h3>3. ЭШ & Сургуулийн зөвлөмж</h3>
+        <p>Монголын тохирох их сургууль, коллеж болон зах зээлийн бодит байдлыг гаргана.</p>
+      </div>
+    </div>
+
+    <div class="form-section-box">
+      <h3>👤 Сурагчийн мэдээлэл ба оршин суугаа аймаг, сум</h3>
+      <div class="form-row">
+        <div class="input-group">
+          <label for="studentName">Сурагчийн нэр (заавал биш)</label>
+          <input type="text" id="studentName" placeholder="Жишээ нь: Бат-Эрдэнэ" />
+        </div>
+        <div class="input-group">
+          <label for="studentGrade">Анги <span class="req">*</span></label>
+          <select id="studentGrade">
+            <option value="">Сонгох...</option>
+            <option value="6–8 дугаар анги">6–8 дугаар анги</option>
+            <option value="9 дүгээр анги">9 дүгээр анги</option>
+            <option value="10 дугаар анги">10 дугаар анги</option>
+            <option value="11 дүгээр анги">11 дүгээр анги</option>
+            <option value="12 дугаар анги">12 дугаар анги</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="input-group">
+          <label for="aimagSelect">Аймаг / Нийслэл <span class="req">*</span></label>
+          <select id="aimagSelect" onchange="updateSoums()">
+            <option value="">Аймаг эсвэл хот сонгох...</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="soumSelect">Сум / Дүүрэг <span class="req">*</span></label>
+          <select id="soumSelect" disabled onchange="hideLocError()">
+            <option value="">Эхлээд аймаг/хотоо сонгоно уу</option>
+          </select>
+        </div>
+      </div>
+      <p class="error-msg" id="err0">⚠️ Анги болон оршин суугаа аймаг (нийслэл), сум (дүүрэг)-аа сонгоно уу.</p>
+    </div>
+
+    <div class="btn-row btn-row-end">
+      <button class="btn btn-primary" type="button" onclick="startSurvey()">Судалгаа эхлүүлэх →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 1: Real Subjects & Exams -->
+  <div class="card screen" id="screen1">
+    <h2 class="section-title">📚 1-р хэсэг: Хичээлийн бодит үнэлгээ</h2>
+    <p class="section-desc">Өөрийнхөө сурлагын бодит байдлаар үнэн зөв тэмдэглээрэй. Энэ нь чамд хуурамч биш, бодит тохирох мэргэжил гаргахад хамгийн чухал.</p>
+
+    <div class="sub-block">
+      <h3>1А. Хичээл бүр дээрх чиний бодит сонирхол ба сурлагын түвшин</h3>
+      <p class="hint">Хичээл бүрийн ард тохирох нэгийг сонгоно уу.</p>
+      <div id="subjectRows"></div>
+    </div>
+
+    <div class="sub-block">
+      <h3>1Б. Яг үнэндээ хамгийн их ДУРТАЙ 1–4 хичээлээ сонгоно уу <span class="req">*</span></h3>
+      <p class="hint">Зөвхөн дүн сайн гэхээс гадна суугаад хийхэд уйдахгүй, сонирхолтой санагддаг хичээлүүдээ дарна уу (дээд тал нь 4).</p>
+      <div class="chip-grid" id="favSubjectChips"></div>
+    </div>
+
+    <div class="sub-block">
+      <h3>1В. Элсэлтийн шалгалт (ЭШ) өгөхөд хамгийн итгэлтэй 2 хичээлээ сонгоно уу <span class="req">*</span></h3>
+      <p class="hint">Боловсролын Үнэлгээний Төвийн албан ёсны 10 хичээлээс бэлдэж чадах 1–3 хичээлээ сонгоно уу.</p>
+      <div class="chip-grid" id="eyeshChips"></div>
+    </div>
+
+    <p class="error-msg" id="err1">⚠️ Бүх хичээлийн түвшинг бөглөж, дор хаяж 1 дуртай хичээл болон 1 ЭШ-ийн хичээл сонгоно уу.</p>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" type="button" onclick="goToScreen(0)">← Буцах</button>
+      <button class="btn btn-primary" type="button" onclick="nextStep(1)">Дараагийн хэсэг →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Real Interests & Work Style -->
+  <div class="card screen" id="screen2">
+    <h2 class="section-title">🛠️ 2-р хэсэг: Бодит сонирхол ба ажлын орчин</h2>
+    <p class="section-desc">Мэргэжил гэдэг өдөр бүр 8 цаг хийдэг ажил. Чи бодит амьдрал дээр яг юу хийх дуртай вэ?</p>
+
+    <div class="sub-block">
+      <h3>2А. Бодит амьдрал дээр чамд таалагддаг, сонирхдог зүйлсээ сонго (2–6 ширхэг) <span class="req">*</span></h3>
+      <p class="hint">Үнэхээр хийж үзмээр санагддаг эсвэл одоо хийдэг зүйлсээ сонгоорой.</p>
+      <div class="chip-grid" id="hobbyChips"></div>
+    </div>
+
+    <div class="sub-block">
+      <h3>2Б. Ирээдүйд ямар орчинд, юутай ажиллавал чи хамгийн жаргалтай байх вэ? <span class="req">*</span></h3>
+      <div id="workEnvChoices"></div>
+    </div>
+
+    <p class="error-msg" id="err2">⚠️ Бодит сонирхлоос дор хаяж 2-ыг сонгож, ажлын орчны асуултуудад хариулна уу.</p>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" type="button" onclick="goToScreen(1)">← Буцах</button>
+      <button class="btn btn-primary" type="button" onclick="nextStep(2)">Дараагийн хэсэг →</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: Concrete Behavior & Strengths -->
+  <div class="card screen" id="screen3">
+    <h2 class="section-title">🧠 3-р хэсэг: Бодит зан төлөв ба чадвар</h2>
+    <p class="section-desc">Дараах бодит нөхцөл байдалд чи ихэвчлэн яаж ханддаг вэ?</p>
+
+    <div id="behaviorQuestions"></div>
+
+    <p class="error-msg" id="err3">⚠️ Бүх асуултад хариулна уу.</p>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" type="button" onclick="goToScreen(2)">← Буцах</button>
+      <button class="btn btn-primary" type="button" onclick="finishSurvey()">✨ Бодит үр дүн гаргах</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: Results -->
+  <div class="card screen" id="screen4">
+    <div class="result-banner" id="resultBanner"></div>
+
+    <h3 style="font-size: 1.25rem; margin-bottom: 14px;">🏆 Чиний бодит өгөгдөлд хамгийн их тохирсон 3 мэргэжил</h3>
+    <div id="careerResults"></div>
+
+    <div id="regionalAdvice"></div>
+
+    <div class="summary-grid">
+      <div class="summary-box">
+        <h3>📌 Чиний сонгосон бодит суурь</h3>
+        <div id="userBasisSummary"></div>
+      </div>
+      <div class="summary-box">
+        <h3>💡 Бодит зөвлөмж (Дараагийн алхам)</h3>
+        <div id="nextStepTips"></div>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <button class="btn btn-secondary" type="button" onclick="resetSurvey()">🔄 Дахин бөглөх</button>
+        <button class="btn btn-outline" type="button" onclick="copySummary()">📋 Үр дүн хуулах</button>
+        <span class="copy-toast" id="copyToast">✅ Хуулагдлаа!</span>
+      </div>
+      <button class="btn btn-primary" type="button" onclick="window.print()">🖨️ Хэвлэх / PDF хадгалах</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 0. Монгол Улсын бүх 21 аймаг, 330 сум + УБ 9 дүүрэг
+  const MONGOLIA_LOCATIONS = {
+    "Улаанбаатар хот": [
+      "Багануур дүүрэг", "Багахангай дүүрэг", "Баянгол дүүрэг", "Баянзүрх дүүрэг",
+      "Налайх дүүрэг", "Сонгинохайрхан дүүрэг", "Сүхбаатар дүүрэг", "Хан-Уул дүүрэг", "Чингэлтэй дүүрэг"
+    ],
+    "Архангай аймаг": [
+      "Батцэнгэл", "Булган", "Жаргалант", "Ихтамир", "Өгийнуур", "Өлзийт", "Өндөр-Улаан",
+      "Тариат", "Төвшрүүлэх", "Хайрхан", "Хангай", "Хашаат", "Хотонт", "Цахир", "Цэнхэр",
+      "Цэцэрлэг", "Чулуут", "Эрдэнэбулган", "Эрдэнэмандал"
+    ],
+    "Баян-Өлгий аймаг": [
+      "Алтай", "Алтанцөгц", "Баяннуур", "Бугат", "Булган", "Буянт", "Дэлүүн",
+      "Ногооннуур", "Өлгий", "Сагсай", "Толбо", "Улаанхус", "Цагааннуур (тосгон)", "Цэнгэл"
+    ],
+    "Баянхонгор аймаг": [
+      "Баацагаан", "Баянбулаг", "Баянговь", "Баянлиг", "Баян-Овоо", "Баян-Өндөр", "Баянхонгор",
+      "Баянцагаан", "Богд", "Бөмбөгөр", "Бууцагаан", "Галуут", "Гурванбулаг", "Жаргалант",
+      "Жинст", "Заг", "Өлзийт", "Хүрээмарал", "Шинэжинст", "Эрдэнэцогт"
+    ],
+    "Булган аймаг": [
+      "Баян-Агт", "Баяннуур", "Бугат", "Булган", "Бүрэгхангай", "Гурванбулаг", "Дашинчилэн",
+      "Могод", "Орхон", "Рашаант", "Сайхан", "Сэлэнгэ", "Тэшиг", "Хангал", "Хишиг-Өндөр", "Хутаг-Өндөр"
+    ],
+    "Говь-Алтай аймаг": [
+      "Алтай", "Баян-Уул", "Бигэр", "Бугат", "Дарви", "Дэлгэр", "Есөнбулаг", "Жаргалан",
+      "Тайшир", "Тонхил", "Төгрөг", "Халиун", "Хөхморьт", "Цогт", "Цээл", "Чандмань", "Шарга", "Эрдэнэ"
+    ],
+    "Говьсүмбэр аймаг": ["Баянтал", "Сүмбэр", "Шивээговь"],
+    "Дархан-Уул аймаг": ["Дархан", "Орхон", "Хонгор", "Шарын гол"],
+    "Дорноговь аймаг": [
+      "Айраг", "Алтанширээ", "Даланжаргалан", "Дэлгэрэх", "Замын-Үүд", "Иххэт", "Мандах",
+      "Өргөн", "Сайншанд", "Сайхандулаан", "Улаанбадрах", "Хатанбулаг", "Хөвсгөл", "Эрдэнэ"
+    ],
+    "Дорнод аймаг": [
+      "Баяндун", "Баянтүмэн", "Баян-Уул", "Булган", "Гурванзагал", "Дашбалбар", "Матад",
+      "Сэргэлэн", "Халхгол", "Хөлөнбуйр", "Хэрлэн", "Цагаан-Овоо", "Чойбалсан", "Чулуунхороот"
+    ],
+    "Дундговь аймаг": [
+      "Адаацаг", "Баянжаргалан", "Говь-Угтаал", "Гурвансайхан", "Дэлгэрхангай", "Дэлгэрцогт",
+      "Дэрэн", "Луус", "Өлзийт", "Өндөршил", "Сайнцагаан", "Сайхан-Овоо", "Хулд", "Цагаандэлгэр", "Эрдэнэдалай"
+    ],
+    "Завхан аймаг": [
+      "Алдархаан", "Асгат", "Баянтэс", "Баянхайрхан", "Дөрвөлжин", "Завханмандал", "Идэр",
+      "Их-Уул", "Нөмрөг", "Отгон", "Сантмаргаз", "Сонгино", "Тосонцэнгэл", "Түдэвтэй",
+      "Тэлмэн", "Тэс", "Улиастай", "Ургамал", "Цагаанхайрхан", "Цагаанчулуут", "Цэцэн-Уул",
+      "Шилүүстэй", "Эрдэнэхайрхан", "Яруу"
+    ],
+    "Орхон аймаг": ["Баян-Өндөр", "Жаргалант"],
+    "Өвөрхангай аймаг": [
+      "Арвайхээр", "Баруунбаян-Улаан", "Бат-Өлзий", "Баянгол", "Баян-Өндөр", "Богд", "Бүрд",
+      "Гучин-Ус", "Есөнзүйл", "Зүүнбаян-Улаан", "Нарийнтээл", "Өлзийт", "Сант", "Тарагт",
+      "Төгрөг", "Уянга", "Хайрхандулаан", "Хархорин", "Хужирт"
+    ],
+    "Өмнөговь аймаг": [
+      "Баяндалай", "Баян-Овоо", "Булган", "Гурвантэс", "Даланзадгад", "Мандал-Овоо", "Манлай",
+      "Ноён", "Номгон", "Сэврэй", "Ханбогд", "Ханхонгор", "Хүрмэн", "Цогт-Овоо", "Цогтцэций"
+    ],
+    "Сүхбаатар аймаг": [
+      "Асгат", "Баруун-Урт", "Баяндэлгэр", "Дарьганга", "Мөнххаан", "Наран", "Онгон",
+      "Сүхбаатар", "Түвшинширээ", "Түмэнцогт", "Уулбаян", "Халзан", "Эрдэнэцагаан"
+    ],
+    "Сэлэнгэ аймаг": [
+      "Алтанбулаг", "Баруунбүрэн", "Баянгол", "Ерөө", "Жавхлант", "Зүүнбүрэн", "Мандал",
+      "Орхон", "Орхонтуул", "Сайхан", "Сант", "Сүхбаатар", "Түшиг", "Хушаат", "Хүдэр",
+      "Цагааннуур", "Шаамар"
+    ],
+    "Төв аймаг": [
+      "Алтанбулаг", "Аргалант", "Архуст", "Батсүмбэр", "Баян", "Баяндэлгэр", "Баянжаргалан",
+      "Баян-Өнжүүл", "Баянхангай", "Баянцагаан", "Баянцогт", "Баянчандмань", "Борнуур", "Бүрэн",
+      "Дэлгэрхаан", "Жаргалант", "Заамар", "Зуунмод", "Лүн", "Мөнгөнморьт", "Өндөрширээт",
+      "Сүмбэр", "Сэргэлэн", "Угтаалцайдам", "Цээл", "Эрдэнэ", "Эрдэнэсант"
+    ],
+    "Увс аймаг": [
+      "Баруунтуруун", "Бөхмөрөн", "Давст", "Завхан", "Зүүнговь", "Зүүнхангай", "Малчин",
+      "Наранбулаг", "Өлгий", "Өмнөговь", "Өндөрхангай", "Сагил", "Тариалан", "Түргэн",
+      "Тэс", "Улаангом", "Ховд", "Хяргас", "Цагаанхайрхан"
+    ],
+    "Ховд аймаг": [
+      "Алтай", "Булган", "Буянт", "Дарви", "Дөргөн", "Дуут", "Жаргалант", "Зэрэг",
+      "Манхан", "Мөнххайрхан", "Мөст", "Мянгад", "Үенч", "Ховд", "Цэцэг", "Чандмань", "Эрдэнэбүрэн"
+    ],
+    "Хөвсгөл аймаг": [
+      "Алаг-Эрдэнэ", "Арбулаг", "Баянзүрх", "Бүрэнтогтох", "Галт", "Жаргалант", "Их-Уул",
+      "Мөрөн", "Рашаант", "Рэнчинлхүмбэ", "Тариалан", "Тосонцэнгэл", "Төмөрбулаг", "Түнэл",
+      "Улаан-Уул", "Ханх", "Хатгал (тосгон)", "Цагааннуур", "Цагаан-Уул", "Цагаан-Үүр",
+      "Цэцэрлэг", "Чандмань-Өндөр", "Шинэ-Идэр", "Эрдэнэбулган"
+    ],
+    "Хэнтий аймаг": [
+      "Батноров", "Батширээт", "Баян-Адарга", "Баянмөнх", "Баян-Овоо", "Баянхутаг", "Биндэр",
+      "Бор-Өндөр", "Галшар", "Дадал", "Дархан", "Дэлгэрхаан", "Жаргалтхаан", "Мөрөн",
+      "Норовлин", "Өмнөдэлгэр", "Хэрлэн", "Цэнхэрмандал"
+    ]
+  };
+
+  const REGIONAL_UNI_TIPS = {
+    "Улаанбаатар хот": [
+      "Нийслэлд МУИС, ШУТИС, АШУҮИС, СЭЗИС, МУБИС, СУИС, ХААИС, ДХИС, МГТИС (Налайх) зэрэг улсын болон хувийн их, дээд сургууль, КООСЭН коллежүүд төвлөрсөн."
+    ],
+    "Дархан-Уул аймаг": [
+      "ШУТИС — Дархан-Уул аймаг дахь Технологийн сургууль (Инженер, МТ, Барилга, Эрчим хүч)",
+      "АШУҮИС — Дархан-Уул аймаг дахь Анагаах ухааны сургууль (Эмч, Сувилахуй)",
+      "ХААИС — Агроэкологи, бизнесийн сургууль (Дархан)",
+      "Дархан-Өргөө / Дархан Политехник коллеж (Техник, цахилгаан, барилгын мэргэжил)"
+    ],
+    "Орхон аймаг": [
+      "ШУТИС — Эрдэнэт цогцолбор дээд сургууль (Уул уурхай, Механик, Цахилгаан, МТ)",
+      "МУИС — Эрдэнэт сургууль (Бизнес, Эдийн засаг, Хүмүүнлэг, МТ)",
+      "Эрдэнэт Политехник коллеж (Үйлдвэр, уул уурхай, засварын практик мэргэжлүүд)"
+    ],
+    "Ховд аймаг": [
+      "МУИС — Баруун бүсийн сургууль (Багш, Шинжлэх ухаан, МТ, Хүмүүнлэг, Бизнес)",
+      "Ховд Хөгжил Политехник коллеж"
+    ],
+    "Завхан аймаг": [
+      "МУИС — Завхан сургууль (Санхүү, Нягтлан бодох бүртгэл, Бизнес, МТ)",
+      "СУИС — Завхан аймаг дахь Хөгжим бүжгийн коллеж"
+    ],
+    "Архангай аймаг": [
+      "МУБИС — Архангай аймаг дахь Багшийн сургууль (СӨБ, Бага ба Дунд ангийн багш)"
+    ],
+    "Баян-Өлгий аймаг": [
+      "МУБИС — Баян-Өлгий аймаг дахь Багшийн сургууль"
+    ],
+    "Говь-Алтай аймаг": [
+      "АШУҮИС — Говь-Алтай аймаг дахь Анагаах ухааны сургууль"
+    ],
+    "Дорноговь аймаг": [
+      "АШУҮИС — Дорноговь аймаг дахь Анагаах ухааны сургууль"
+    ],
+    "Дорнод аймаг": [
+      "Дорнод Их Сургууль (Багш, Инженер, Бизнес, Хүмүүнлэг — Зүүн бүсийн гол их сургууль)"
+    ],
+    "Өмнөговь аймаг": [
+      "Өмнөговь Политехник коллеж болон уул уурхайн компаниудын (Оюу Толгой, Эрдэнэс Тавантолгой гэх мэт) тэтгэлэгт хөтөлбөрүүд"
+    ],
+    "Өвөрхангай аймаг": [
+      "ШУТИС — Өвөрхангай аймаг дахь Технологийн сургууль / Политехник коллеж"
+    ],
+    "Сүхбаатар аймаг": [
+      "ШУТИС — Сүхбаатар аймаг дахь салбар сургууль болон зүүн бүсийн Дорнод Их Сургууль"
+    ]
+  };
+
+  // Аймаг/сум дүүргэх
+  const aimagSelect = document.getElementById('aimagSelect');
+  const soumSelect = document.getElementById('soumSelect');
+  Object.keys(MONGOLIA_LOCATIONS).forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    aimagSelect.appendChild(opt);
+  });
+
+  function updateSoums() {
+    const val = aimagSelect.value;
+    soumSelect.innerHTML = '';
+    if (!val) {
+      soumSelect.disabled = true;
+      soumSelect.innerHTML = '<option value="">Эхлээд аймаг/хотоо сонгоно уу</option>';
+      return;
+    }
+    soumSelect.disabled = false;
+    soumSelect.innerHTML = `<option value="">${val === 'Улаанбаатар хот' ? 'Дүүрэг сонгох...' : 'Сум сонгох...'}</option>`;
+    MONGOLIA_LOCATIONS[val].forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s;
+      opt.textContent = val === 'Улаанбаатар хот' ? s : `${s} сум`;
+      soumSelect.appendChild(opt);
+    });
+    hideLocError();
+  }
+  function hideLocError() { document.getElementById('err0').style.display = 'none'; }
+
+  // 1. Бодит ЕБС-ийн 12 хичээл
+  const REAL_SUBJECTS = [
+    { id: 'math', name: 'Математик', isEyesh: true },
+    { id: 'it', name: 'Мэдээллийн технологи', isEyesh: false },
+    { id: 'phys', name: 'Физик', isEyesh: true },
+    { id: 'chem', name: 'Хими', isEyesh: true },
+    { id: 'bio', name: 'Биологи', isEyesh: true },
+    { id: 'mon', name: 'Монгол хэл, уран зохиол', isEyesh: true },
+    { id: 'eng', name: 'Англи хэл / Гадаад хэл', isEyesh: true },
+    { id: 'soc', name: 'Нийгэм судлал', isEyesh: true },
+    { id: 'hist', name: 'Түүх', isEyesh: true },
+    { id: 'geo', name: 'Газар зүй', isEyesh: true },
+    { id: 'art', name: 'Дүрслэх урлаг / Дизайн / Технологи', isEyesh: false },
+    { id: 'pe', name: 'Биеийн тамир / Эрүүл мэнд', isEyesh: false }
+  ];
+
+  // БҮТ-ийн албан ёсны 10 ЭШ-ийн хичээл
+  const EYESH_SUBJECTS = [
+    { id: 'math', name: 'Математик' },
+    { id: 'eng', name: 'Англи хэл' },
+    { id: 'mon', name: 'Монгол хэл' },
+    { id: 'soc', name: 'Нийгэм судлал' },
+    { id: 'phys', name: 'Физик' },
+    { id: 'chem', name: 'Хими' },
+    { id: 'bio', name: 'Биологи' },
+    { id: 'hist', name: 'Түүх' },
+    { id: 'geo', name: 'Газар зүй' },
+    { id: 'rus', name: 'Орос хэл' }
+  ];
+
+  const SUBJECT_LEVELS = [
+    { val: 0, label: 'Дуртай биш / Сул' },
+    { val: 1, label: 'Дундаж' },
+    { val: 2, label: 'Сайн сурдаг' },
+    { val: 3, label: 'Маш дуртай & Онц' }
+  ];
+
+  // 2. Бодит хобби ба сонирхлууд
+  const REAL_HOBBIES = [
+    { id: 'coding', label: '💻 Код бичих, програм/вэб хэрхэн ажилладгийг судлах' },
+    { id: 'repair', label: '🔧 Техник, машин, цахилгаан хэрэгсэл задалж угсрах' },
+    { id: 'medical', label: '🩺 Хүний бие, өвчин эмгэг, эрүүл мэндийн талаар судлах' },
+    { id: 'care', label: '🤝 Хүмүүсийг асрах, зовлонг нь хуваалцаж туслах' },
+    { id: 'design', label: '🎨 Зураг зурах, фото/видео эвлүүлэх, постер дизайн хийх' },
+    { id: 'build', label: '🏗️ Барилга, гэр орны тавилга, орон зайг зураглаж төлөвлөх' },
+    { id: 'finance', label: '💰 Мөнгө санхүү, хувьцаа, тооцоо бүртгэл нарийн хөтлөх' },
+    { id: 'business', label: '📈 Наймаа хийх, бүтээгдэхүүн сурталчлах, ашиг олох санаа бодох' },
+    { id: 'teach', label: '👩‍🏫 Дүү нар болон найзууддаа хичээл зааж ойлгуулах' },
+    { id: 'debate', label: '⚖️ Хууль дүрэм, нийгмийн асуудлаар мэтгэлцэх, илтгэл тавих' },
+    { id: 'writing', label: '✍️ Нийтлэл, түүх, контент бичих эсвэл гадаад хэлнээс орчуулах' },
+    { id: 'nature', label: '🌱 Амьтан ургамал арчлах, хөдөө аж ахуй, байгаль орчин судлах' },
+    { id: 'travel', label: '✈️ Аялал зохион байгуулах, жуулчидтай харилцах, соёл судлах' },
+    { id: 'sport', label: '⚽ Спорт, биеийн хүчний хөдөлгөөн, бэлтгэл хийх' }
+  ];
+
+  // 2Б. Ажлын орчны бодит сонголтууд
+  const WORK_ENV_QUESTIONS = [
+    {
+      id: 'envType',
+      title: '1. Чи өдөр бүр ямар төрлийн зүйлтэй түлхүү ажилламаар байна вэ?',
+      options: [
+        { val: 'digital', title: 'Компьютер, дата, програм, тооцоолол', desc: 'Оффис эсвэл гэрээсээ (remote) дэлгэц дээр төвлөрч ажиллах' },
+        { val: 'people', title: 'Хүмүүстэй нүүр тулан харилцах, туслах, заах', desc: 'Эмнэлэг, сургууль, оффис, үйлчилгээний байгууллагад ажиллах' },
+        { val: 'hands', title: 'Бодит машин техник, барилга, багаж хэрэгсэл, байгаль', desc: 'Үйлдвэр, уурхай, талбай, лабораторид гар бие оролцож ажиллах' },
+        { val: 'creative', title: 'Урлаг, дизайн, медиа, шинэ санаа бүтээх', desc: 'Студи, агентлаг, чөлөөт уран бүтээлийн орчинд ажиллах' }
+      ]
+    },
+    {
+      id: 'stability',
+      title: '2. Ирээдүйн ажлын хэв маягийн аль нь чамд илүү амар тайван санагддаг вэ?',
+      options: [
+        { val: 'stable', title: 'Найдвартай, тогтсон цалин ба нийгмийн баталгаатай салбар', desc: 'Жишээ нь: Эмч, багш, санхүүч, төрийн болон томоохон байгууллага' },
+        { val: 'growth', title: 'Өрсөлдөөн ихтэй ч ур чадвараасаа шалтгаалж өндөр орлого олох салбар', desc: 'Жишээ нь: Програм хангамж, бизнес, маркетинг, уул уурхай/инженер' },
+        { val: 'own', title: 'Өөрийн бизнесийг эхлүүлэх эсвэл чөлөөт (freelance) ажил хийх', desc: 'Дизайн, худалдаа, контент, зөвлөх үйлчилгээ гэх мэт' }
+      ]
+    }
+  ];
+
+  // 3. Зан төлөвийн бодит нөхцөл байдал
+  const BEHAVIOR_QUESTIONS = [
+    {
+      id: 'problemSolve',
+      title: '1. Хэцүү, ойлгомжгүй даалгавар эсвэл асуудал тулгарвал чи яадаг вэ?',
+      options: [
+        { val: 'logic', title: 'Шат дараатай задалж, логик гаргалгаагаар учрыг нь олдог', desc: 'Тоо, код, техникийн эвдрэл зэрэгт тэвчээртэй суудаг' },
+        { val: 'social', title: 'Найз нөхөд, багштайгаа ярилцаж хамтдаа шийддэг', desc: 'Хүнтэй зөвлөлдөхөд толгой илүү хурдан ажилладаг' },
+        { val: 'creative', title: 'Шал өөр, шинэлэг аргаар хийх гээд оролддог', desc: 'Нэг хэвийн дүрмээр явах дургүй' },
+        { val: 'practical', title: 'Шууд барьж аваад туршиж үзэж байж ойлгодог', desc: 'Онол уншихаас илүү гараараа хийх дуртай' }
+      ]
+    },
+    {
+      id: 'teamRole',
+      title: '2. Анги, багийн ажил хийхэд чи ихэвчлэн ямар үүрэг гүйцэтгэдэг вэ?',
+      options: [
+        { val: 'leader', title: 'Хүмүүсийг зохион байгуулж, хэн юу хийхийг хуваарилдаг', desc: 'Удирдах, ярьж ойлгуулах дуртай' },
+        { val: 'analyst', title: 'Мэдээлэл цуглуулж, тооцоо судалгааг нь нямбай хийдэг', desc: 'Алдаа мадаггүй, эмх цэгцтэй гүйцэтгэдэг' },
+        { val: 'creator', title: 'Слайд, зураг, танилцуулгыг гоё үзэмжтэй болгодог', desc: 'Өнгө үзэмж, бичвэр, бүтээлч хэсгийг хариуцдаг' },
+        { val: 'supporter', title: 'Бусдад тусалж, багийн уур амьсгалыг эв найртай байлгадаг', desc: 'Хүмүүсийг сонсож, дэмжих чадвар сайтай' }
+      ]
+    },
+    {
+      id: 'strength',
+      title: '3. Чи өөрийнхөө хамгийн бодит, төрөлхийн давуу талыг юу гэж хардаг вэ?',
+      options: [
+        { val: 'mathLogic', title: 'Тоо бодох, сэтгэн бодох, компьютер хурдан сурах', desc: '' },
+        { val: 'handsCraft', title: 'Гарын ур дүй, техник сэтгэлгээ, биеийн хөдөлгөөн', desc: '' },
+        { val: 'empathyComm', title: 'Хүний сэтгэлийг ойлгох, тэвчээртэй сонсох, халамжлах', desc: '' },
+        { val: 'speakLead', title: 'Хэл яриа сайтай, хүн үнэмшүүлэх, бичих ба хэл сурах', desc: '' },
+        { val: 'visualArt', title: 'Харааны мэдрэмж, зурах, загвар зохион бүтээх', desc: '' }
+      ]
+    },
+    {
+      id: 'studyHabit',
+      title: '4. Урт хугацаанд хүнд хичээл (жишээ нь 6 жил анагаах, эсвэл гүнзгий математик) уйгагүй сурах тэвчээр хэр вэ?',
+      options: [
+        { val: 'high', title: 'Маш тэвчээртэй — зорилгоо тавьсан бол олон жил сурч чадна', desc: '' },
+        { val: 'medium', title: 'Дуртай сэдэв байвал хичээнэ, гэхдээ хэт хүнд онолоос халширдаг', desc: '' },
+        { val: 'practical', title: 'Олон жил ном уншихаас илүү хурдан практик ур чадвар эзэмшээд ажилламаар байна', desc: '' }
+      ]
+    }
+  ];
+
+  // 4. Монголын бодит 14 мэргэжил + ЭШ-ийн суурь хичээл + Зах зээлийн бодит байдал (2026)
+  const CAREERS = [
+    {
+      title: 'Програм хангамжийн инженер / МТ, Кибер аюулгүй байдал',
+      desc: 'Програм, вэбсайт, аппликейшн, хиймэл оюун ухаан болон мэдээллийн аюулгүй байдлыг бүтээж хамгаалах мэргэжил.',
+      eyeshReq: ['math', 'phys', 'eng'],
+      eyeshText: 'Суурь: Математик | Дагалдах: Физик эсвэл Англи хэл',
+      coreSubjects: { math: 1.0, it: 1.0, eng: 0.7, phys: 0.5 },
+      mandatoryMin: ['math'],
+      hobbies: ['coding', 'finance'],
+      envs: ['digital'],
+      stabilities: ['growth', 'own'],
+      strengths: ['mathLogic'],
+      behaviors: ['logic', 'analyst'],
+      marketReality: '🔥 ӨНДӨР ЭРЭЛТТЭЙ (Монголд ч, дэлхийд ч). Банк санхүү, технологийн компаниудаас гадна гадаадын компанид гэрээсээ (remote) өндөр цалинтай ажиллах боломжтой. Гэхдээ математик, логик сэтгэлгээ болон англи хэл зайлшгүй шаарддаг.',
+      universities: [
+        'МУИС (ХШУИС) — Компьютерийн ухаан, Програм хангамж, ХИОУ (~6.1 сая₮/жил)',
+        'ШУТИС (МХТС) — Програм хангамж, Кибер аюулгүй байдал (~6.2–6.5 сая₮/жил)',
+        'Шинэ Монгол Технологийн Дээд Сургууль (ШМТДС) / СЭЗИС (Мэдээллийн систем)',
+        'Орон нутагт: МУИС-ийн Ховд, Эрдэнэт, Завхан болон ШУТИС-ийн Дархан, Эрдэнэт салбар'
+      ]
+    },
+    {
+      title: 'Хүний их эмч / Шүдний эмч / Эм зүйч',
+      desc: 'Өвчин оношлох, эмчлэх, хүний амь нас, эрүүл мэндийг аврах хамгийн хариуцлагатай анагаах ухааны мэргэжил.',
+      eyeshReq: ['bio', 'chem'],
+      eyeshText: 'Суурь: Биологи + Хими (ЭШ-ийн 2 хичээлийн нийлбэрээр жагсаана)',
+      coreSubjects: { bio: 1.0, chem: 1.0, eng: 0.5 },
+      mandatoryMin: ['bio', 'chem'],
+      hobbies: ['medical', 'care'],
+      envs: ['people', 'hands'],
+      stabilities: ['stable'],
+      strengths: ['empathyComm', 'mathLogic'],
+      behaviors: ['high', 'supporter', 'analyst'],
+      needHighStudy: true,
+      marketReality: '🏥 ТОГТВОРТОЙ ЭРЭЛТТЭЙ (Ялангуяа орон нутагт нарийн мэргэжлийн эмч дутагдалтай). Суралцах хугацаа урт (6 жил + резидент 2–3 жил), маш их хичээл зүтгэл шаарддаг ч насан туршийн баталгаатай мэргэжил.',
+      universities: [
+        'АШУҮИС — Хүний их эмч, Шүд, Эм зүй (~3.5–6.8 сая₮/жил; орон нутаг: Дархан, Говь-Алтай, Дорноговь)',
+        'Ач Анагаах Ухааны Их Сургууль / Этүгэн Их Сургууль / Шинэ Анагаах Ухаан ИС'
+      ]
+    },
+    {
+      title: 'Сувилагч / Хөдөлгөөн засалч / Нийгмийн эрүүл мэнд',
+      desc: 'Эмчилгээ, сувилгаа, нөхөн сэргээлт болон эрүүл амьдралын хэв маягийг дэмжих эрүүл мэндийн гол тулгуур мэргэжил.',
+      eyeshReq: ['bio', 'chem'],
+      eyeshText: 'Суурь: Биологи, Хими (Зарим сургуульд Биологи + Монгол хэл/Нийгэм)',
+      coreSubjects: { bio: 1.0, chem: 0.6, pe: 0.6 },
+      mandatoryMin: ['bio'],
+      hobbies: ['medical', 'care', 'sport'],
+      envs: ['people', 'hands'],
+      stabilities: ['stable'],
+      strengths: ['empathyComm', 'handsCraft'],
+      behaviors: ['supporter', 'practical'],
+      marketReality: '🔥 МАШ ӨНДӨР ХОМСДОЛТОЙ (2025–2035 онд Монголд хамгийн эрэлттэй). Гадаад улсуудад (Япон, Солонгос, Австрали, Герман) ч маш өндөр цалинтай ажлын байр олонтой. Их эмчээс богино хугацаанд (4 жил) төгсөөд шууд ажиллах давуу талтай.',
+      universities: [
+        'АШУҮИС — Сувилахуйн сургууль, Хөдөлгөөн засал, Нийгмийн эрүүл мэнд (БЗС-ийн хөнгөлөлттэй хөтөлбөрүүд)',
+        'Этүгэн ИС / Ач АУИС / Орон нутгийн АШУҮИС-ийн салбар сургуулиуд'
+      ]
+    },
+    {
+      title: 'Барилга, Уул уурхай, Цахилгаан ба Дэд бүтцийн инженер',
+      desc: 'Барилга байгууламж, зам гүүр, эрчим хүч, дулаан, уул уурхайн үйлдвэрлэлийг төлөвлөж барьж байгуулах инженер.',
+      eyeshReq: ['math', 'phys'],
+      eyeshText: 'Суурь: Математик | Дагалдах: Физик (эсвэл Хими)',
+      coreSubjects: { math: 1.0, phys: 1.0, it: 0.5, art: 0.5 },
+      mandatoryMin: ['math', 'phys'],
+      hobbies: ['repair', 'build'],
+      envs: ['hands', 'digital'],
+      stabilities: ['growth', 'stable'],
+      strengths: ['handsCraft', 'mathLogic'],
+      behaviors: ['practical', 'logic'],
+      marketReality: '🔥 ХАМГИЙН ИХ АЖЛЫН БАЙРТАЙ САЛБАР (ХАХНХССХ-ийн 2026 оны судалгаагаар барилга, эрчим хүч, уул уурхайн инженер болон цахилгаанчин хамгийн эрэлттэй). Өндөр цалинтай уул уурхай, эрчим хүчний төслүүдэд ажиллах боломж өргөн.',
+      universities: [
+        'ШУТИС — Барилга архитектур, Эрчим хүч, Уул уурхайн сургууль (~6.2 сая₮/жил; Дархан, Эрдэнэт салбар)',
+        'МГТИС (Монгол-Германы хамтарсан их сургууль, Налайх) — Олон улсын инженерийн хөтөлбөр',
+        'Практик хурдан сурах бол: ШУТИС-КООСЭН, Дархан/Эрдэнэт/Өмнөговийн Политехник коллеж'
+      ]
+    },
+    {
+      title: 'Механик, Автоматжуулалт ба Сэргээгдэх эрчим хүчний инженер',
+      desc: 'Машин механизм, робот автоматжуулалт, нар салхины сэргээгдэх эрчим хүчний систем зохион бүтээх, засварлах.',
+      eyeshReq: ['math', 'phys'],
+      eyeshText: 'Суурь: Математик + Физик',
+      coreSubjects: { phys: 1.0, math: 0.9, it: 0.7 },
+      mandatoryMin: ['phys'],
+      hobbies: ['repair', 'coding', 'build'],
+      envs: ['hands'],
+      stabilities: ['growth', 'stable'],
+      strengths: ['handsCraft', 'mathLogic'],
+      behaviors: ['practical', 'logic'],
+      marketReality: '⚡ ИРЭЭДҮЙД ӨСӨХ ЭРЭЛТТЭЙ. Ногоон эрчим хүч, үйлдвэрийн автоматжуулалт, цахилгаан машин, уул уурхайн хүнд механизмын инженер Монголд маш үнэ цэнтэй.',
+      universities: [
+        'ШУТИС (Механик, тээврийн сургууль / Эрчим хүчний сургууль)',
+        'МГТИС (Налайх) — Механик, Мехатроник, Сэргээгдэх эрчим хүч',
+        'ШМТДС / ШУТИС-КООСЭН технологийн коллеж (9-р ангиас ч орж болдог!)'
+      ]
+    },
+    {
+      title: 'Ерөнхий боловсрол ба Сургуулийн өмнөх боловсролын багш',
+      desc: 'Хүүхэд залууст мэдлэг олгох, хүмүүжүүлэх, ирээдүйн иргэдийг бэлтгэх нийгмийн хамгийн чухал мэргэжил.',
+      eyeshReq: ['mon', 'math', 'eng', 'soc'],
+      eyeshText: 'Заах хичээлийн дагуу (ж.нь Математик, Англи хэл, Монгол хэл, Нийгэм гэх мэт)',
+      coreSubjects: { mon: 0.8, soc: 0.7, eng: 0.7, math: 0.6, pe: 0.5 },
+      mandatoryMin: [],
+      hobbies: ['teach', 'care', 'sport'],
+      envs: ['people'],
+      stabilities: ['stable'],
+      strengths: ['empathyComm', 'speakLead'],
+      behaviors: ['supporter', 'leader'],
+      marketReality: '🔥 2026 ОНД УЛСЫН ХЭМЖЭЭНД ХАМГИЙН ӨНДӨР ЭРЭЛТТЭЙ (Ялангуяа СӨБ-ийн багш, STEM буюу Математик/Физик/МТ-ийн багш, Англи хэлний багш маш их дутагдалтай). Төрөөс багш мэргэжлээр суралцагчдад тэтгэлэг, орон нутагт нэмэгдэл олгодог.',
+      universities: [
+        'МУБИС (УБ болон Архангай, Баян-Өлгий салбар) — Бүх төрлийн багшийн мэргэжил',
+        'МУИС (УБ болон Ховд, Эрдэнэт) — Шинжлэх ухааны болон хэлний багш',
+        'Дорнод Их Сургууль / ХҮИС'
+      ]
+    },
+    {
+      title: 'Архитектор / График ба UI/UX Дизайнер / Медиа',
+      desc: 'Барилга орон зай, вэб/апп интерфэйс, брэнд дизайн, видео анимацийг гоо зүй ба функцтэй хослуулан бүтээх.',
+      eyeshReq: ['math', 'eng', 'mon'],
+      eyeshText: 'Ур чадварын шалгалт (Зураг/Зохиомж) + Математик эсвэл Англи хэл',
+      coreSubjects: { art: 1.0, it: 0.7, math: 0.5 },
+      mandatoryMin: ['art'],
+      hobbies: ['design', 'build', 'coding'],
+      envs: ['creative', 'digital'],
+      stabilities: ['own', 'growth'],
+      strengths: ['visualArt'],
+      behaviors: ['creator', 'creative'],
+      marketReality: '🎨 ЧӨЛӨӨТ ЗАХ ЗЭЭЛТЭЙ (Фриланс болон олон улсын төслүүд дээр ажиллах боломжтой). Сайн портфолио буюу бодит бүтээлтэй байвал дипломоос илүү ур чадварыг үнэлдэг.',
+      universities: [
+        'ШУТИС (Барилга архитектур / ҮТС — График, интерьер дизайн)',
+        'СУИС (Дүрслэх, дизайн урлагийн сургууль)',
+        'ШМТДС (Архитектур) / СИТИ Их Сургууль'
+      ]
+    },
+    {
+      title: 'Санхүү, Нягтлан бодох бүртгэл ба Дата шинжээч',
+      desc: 'Байгууллагын санхүү, татвар, хөрөнгө оруулалт болон их хэмжээний тоон өгөгдөлд шинжилгээ хийж шийдвэр гаргадаг мэргэжил.',
+      eyeshReq: ['math', 'soc', 'eng'],
+      eyeshText: 'Суурь: Математик | Дагалдах: Нийгэм судлал эсвэл Англи хэл',
+      coreSubjects: { math: 1.0, it: 0.7, soc: 0.6 },
+      mandatoryMin: ['math'],
+      hobbies: ['finance', 'coding', 'business'],
+      envs: ['digital'],
+      stabilities: ['stable', 'growth'],
+      strengths: ['mathLogic'],
+      behaviors: ['analyst', 'logic'],
+      marketReality: '📊 ТОГТВОРТОЙ БӨГӨӨД ЧАНАР ШААРДДАГ. Жирийн нягтлан олон ч, Excel/Python/PowerBI ашигладаг Дата шинжээч, олон улсын ACCA/CPA зэрэгтэй санхүүч Монголд өндөр цалинтай, эрэлттэй.',
+      universities: [
+        'СЭЗИС (Санхүү, Эдийн Засгийн Их Сургууль) — Санхүү, НББ, Банк',
+        'МУИС (Бизнес, Эдийн засаг, Статистик; Завхан ба Эрдэнэт салбар)',
+        'Мандах Их Сургууль — Нягтлан бодох бүртгэл, Аудит'
+      ]
+    },
+    {
+      title: 'Бизнес, Маркетинг, Худалдаа ба Логистикийн менежер',
+      desc: 'Бүтээгдэхүүн борлуулах, дижитал маркетинг хийх, импорт/экспортын тээвэр логистик болон багийг удирдах.',
+      eyeshReq: ['math', 'soc', 'eng'],
+      eyeshText: 'Суурь: Математик эсвэл Нийгэм судлал | Дагалдах: Англи хэл',
+      coreSubjects: { soc: 0.8, eng: 0.8, math: 0.7, mon: 0.6 },
+      mandatoryMin: [],
+      hobbies: ['business', 'finance', 'travel'],
+      envs: ['people', 'digital'],
+      stabilities: ['growth', 'own'],
+      strengths: ['speakLead'],
+      behaviors: ['leader', 'creative'],
+      marketReality: '⚠️ ӨРСӨЛДӨӨН ИХТЭЙ, ЧАДВАР ШААРДАНА. Монголд бизнесийн анги төгсөгчид олон тул зөвхөн онолоор бус, Дижитал маркетинг, Гадаад худалдаа/Логистик, Хятад/Англи хэлтэй хослуулсан нь амжилт олдог.',
+      universities: [
+        'СЭЗИС / МУИС (Бизнесийн сургууль)',
+        'ШУТИС (БуХС — Логистик, Менежмент)',
+        'ХҮИС / Мандах ИС'
+      ]
+    },
+    {
+      title: 'Сэтгэл зүйч / Нийгмийн ажилтан',
+      desc: 'Хүүхэд, гэр бүл, ажилтнуудын сэтгэл зүйн эрүүл мэндийг дэмжих, зөвлөгөө өгөх, нийгмийн асуудлыг шийдвэрлэх.',
+      eyeshReq: ['soc', 'bio', 'mon'],
+      eyeshText: 'Суурь: Нийгэм судлал эсвэл Биологи | Дагалдах: Монгол хэл / Англи хэл',
+      coreSubjects: { soc: 0.9, bio: 0.7, mon: 0.7 },
+      mandatoryMin: [],
+      hobbies: ['care', 'teach', 'debate'],
+      envs: ['people'],
+      stabilities: ['stable', 'own'],
+      strengths: ['empathyComm'],
+      behaviors: ['supporter', 'social'],
+      marketReality: '🌱 ЭРЭЛТ НЬ ӨСӨЖ БУЙ ШИНЭ ЧИГЛЭЛ. ЕБС бүрд сэтгэл зүйч ажиллуулах бодлого, мөн хувийн зөвлөгөө, байгууллагын хүний нөөцийн салбарт сэтгэл зүйчдийн хэрэгцээ нэмэгдэж байна.',
+      universities: [
+        'МУИС (ШУС — Сэтгэл судлал)',
+        'МУБИС (Сэтгэл судлал, Нийгмийн ажил)',
+        'ХҮИС / Отгонтэнгэр ИС'
+      ]
+    },
+    {
+      title: 'Эрх зүйч (Хуульч) / Олон улсын харилцаа',
+      desc: 'Хууль эрх зүй, шүүх, гэрээ хэлэлцээр, хүний эрх болон улс хоорондын дипломат харилцааны чиглэл.',
+      eyeshReq: ['soc', 'hist', 'mon', 'eng'],
+      eyeshText: 'Суурь: Нийгэм судлал, Түүх | Дагалдах: Монгол хэл, Англи хэл',
+      coreSubjects: { soc: 1.0, hist: 0.9, mon: 0.9, eng: 0.8 },
+      mandatoryMin: ['soc'],
+      hobbies: ['debate', 'writing'],
+      envs: ['people', 'digital'],
+      stabilities: ['stable', 'growth'],
+      strengths: ['speakLead'],
+      behaviors: ['leader', 'logic', 'high'],
+      needHighStudy: true,
+      marketReality: '⚠️ ИЛҮҮДЭЛТЭЙ, МАШ ӨНДӨР ӨРСӨЛДӨӨНТЭЙ. Монголд хуульч төгсөгч маш олон тул зөвхөн шилдэг их сургуулиудад өндөр оноотой орж, Хуульчийн мэргэжлийн шалгалтад тэнцсэн, гадаад хэлтэй хүмүүс л сайн ажлын байранд гардаг.',
+      universities: [
+        'МУИС (Хууль зүйн сургууль / ОУХНУС) — ЭШ-ийн маш өндөр босготой',
+        'Дотоод Хэргийн Их Сургууль (ДХИС)',
+        'Шихихутуг ИС / Отгонтэнгэр ИС'
+      ]
+    },
+    {
+      title: 'Сэтгүүлч / Контент бүтээгч / Гадаад хэлний орчуулагч',
+      desc: 'Мэдээ мэдээлэл бэлтгэх, видео/сошиал контент хийх, утга зохиол ба гадаад хэлний орчуулга хийх.',
+      eyeshReq: ['mon', 'eng', 'soc', 'hist'],
+      eyeshText: 'Суурь: Монгол хэл эсвэл Англи хэл | Дагалдах: Нийгэм судлал / Түүх',
+      coreSubjects: { mon: 1.0, eng: 1.0, soc: 0.6, art: 0.6 },
+      mandatoryMin: ['mon'],
+      hobbies: ['writing', 'design', 'travel'],
+      envs: ['creative', 'people'],
+      stabilities: ['own', 'growth'],
+      strengths: ['speakLead', 'visualArt'],
+      behaviors: ['creator', 'creative'],
+      marketReality: '📱 ДИЖИТАЛ КОНТЕНТ ӨСӨЖ БАЙНА. Уламжлалт сонин/ТВ-ээс илүү дижитал медиа, видео продакшн, бизнесийн PR, мөн Хятад/Солонгос/Япон/Англи хэлний техникийн болон бизнесийн орчуулагч эрэлттэй.',
+      universities: [
+        'МУИС (ШУС — Сэтгүүл зүй, Гадаад хэлний орчуулга)',
+        'ХҮИС (Орчуулга, Сэтгүүл зүй) / СУИС (РТМУС — Медиа, Найруулагч)',
+        'СИТИ ИС / МУБИС'
+      ]
+    },
+    {
+      title: 'Биотехнологи, Хүнсний инженер, ХАА ба Байгаль орчин',
+      desc: 'Хүнсний аюулгүй байдал, мал эмнэлэг, газар тариалан, экологи болон байгалийн нөхөн сэргээлтийн шинжлэх ухаан.',
+      eyeshReq: ['bio', 'chem', 'geo'],
+      eyeshText: 'Суурь: Биологи, Хими эсвэл Газар зүй',
+      coreSubjects: { bio: 1.0, chem: 0.9, geo: 0.8 },
+      mandatoryMin: ['bio'],
+      hobbies: ['nature', 'medical'],
+      envs: ['hands'],
+      stabilities: ['stable'],
+      strengths: ['handsCraft', 'mathLogic'],
+      behaviors: ['analyst', 'practical'],
+      marketReality: '🌾 МОНГОЛЫН СТРАТЕГИЙН САЛБАР (Төгсөгч дутмаг). Хүнсний үйлдвэрлэл, уул уурхайн нөхөн сэргээлт (байгаль орчны мэргэжилтэн), агрономич, малын эмч орон нутаг болон хувийн компаниудад эрэлттэй.',
+      universities: [
+        'ХААИС (Хөдөө Аж Ахуйн Их Сургууль — УБ болон Дархан, Орхон салбар)',
+        'МУИС (Экологи, Биотехнологи, Газар зүй)',
+        'ШУТИС (Хүнс, биотехнологи)'
+      ]
+    },
+    {
+      title: 'Аялал жуулчлал, Зочид буудал ба Үйлчилгээний менежмент',
+      desc: 'Гадаадын жуулчид хүлээн авах, аяллын хөтөлбөр зохиох, зочид буудал, жуулчны баазын үйлчилгээг удирдах.',
+      eyeshReq: ['eng', 'geo', 'hist', 'soc'],
+      eyeshText: 'Суурь: Англи хэл, Газар зүй эсвэл Түүх/Нийгэм',
+      coreSubjects: { eng: 1.0, geo: 0.9, hist: 0.7, soc: 0.6 },
+      mandatoryMin: [],
+      hobbies: ['travel', 'nature', 'business'],
+      envs: ['people', 'hands'],
+      stabilities: ['own', 'growth'],
+      strengths: ['speakLead', 'empathyComm'],
+      behaviors: ['social', 'leader'],
+      marketReality: '✈️ ӨСӨЖ БУЙ САЛБАР ("Go Mongolia" хөтөлбөрөөр жуулчдын тоо өсөж байгаа ч улирлын шинж чанартай). Гадаад хэл сайн мэддэг, зохион байгуулах чадвартай хүмүүс өөрийн аялал жуулчлалын компани, бааз ажиллуулах боломжтой.',
+      universities: [
+        'МУИС (ШУС / Бизнес — Аялал жуулчлалын менежмент)',
+        'ХААИС / ХҮИС / Олон улсын Улаанбаатарын ИС',
+        'Газарчин / СИТИ ИС (Зочлох үйлчилгээ)'
+      ]
+    }
+  ];
+
+  // --- UI Бүтээх хэсэг ---
+  function initStep1() {
+    const rowsDiv = document.getElementById('subjectRows');
+    rowsDiv.innerHTML = REAL_SUBJECTS.map(sub => `
+      <div class="subject-row" id="subrow-${sub.id}">
+        <span class="subject-name">${sub.name}</span>
+        <div class="level-pills">
+          ${SUBJECT_LEVELS.map(lvl => `
+            <input type="radio" name="lvl_${sub.id}" id="lvl_${sub.id}_${lvl.val}" value="${lvl.val}" onchange="clearSubRow('${sub.id}')">
+            <label for="lvl_${sub.id}_${lvl.val}">${lvl.label}</label>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('favSubjectChips').innerHTML = REAL_SUBJECTS.map(sub => `
+      <div class="chip-item">
+        <input type="checkbox" name="favSub" id="fav_${sub.id}" value="${sub.id}" onchange="limitCheckboxes('favSub', 4)">
+        <label for="fav_${sub.id}"><span>⭐</span><span>${sub.name}</span></label>
+      </div>
+    `).join('');
+
+    document.getElementById('eyeshChips').innerHTML = EYESH_SUBJECTS.map(sub => `
+      <div class="chip-item">
+        <input type="checkbox" name="eyeshSub" id="eyesh_${sub.id}" value="${sub.id}" onchange="limitCheckboxes('eyeshSub', 3)">
+        <label for="eyesh_${sub.id}"><span>📝</span><span>${sub.name}</span></label>
+      </div>
+    `).join('');
+  }
+
+  function initStep2() {
+    document.getElementById('hobbyChips').innerHTML = REAL_HOBBIES.map(h => `
+      <div class="chip-item">
+        <input type="checkbox" name="hobby" id="hob_${h.id}" value="${h.id}" onchange="limitCheckboxes('hobby', 6)">
+        <label for="hob_${h.id}"><span>${h.label}</span></label>
+      </div>
+    `).join('');
+
+    document.getElementById('workEnvChoices').innerHTML = WORK_ENV_QUESTIONS.map(q => `
+      <div class="choice-group">
+        <div class="choice-title">${q.title}</div>
+        <div class="choice-list">
+          ${q.options.map((opt, idx) => `
+            <div class="choice-card">
+              <input type="radio" name="wenv_${q.id}" id="wenv_${q.id}_${idx}" value="${opt.val}">
+              <label for="wenv_${q.id}_${idx}">
+                <strong>${opt.title}</strong>
+                <span>${opt.desc}</span>
+              </label>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function initStep3() {
+    document.getElementById('behaviorQuestions').innerHTML = BEHAVIOR_QUESTIONS.map(q => `
+      <div class="sub-block">
+        <div class="choice-title">${q.title}</div>
+        <div class="choice-list">
+          ${q.options.map((opt, idx) => `
+            <div class="choice-card">
+              <input type="radio" name="beh_${q.id}" id="beh_${q.id}_${idx}" value="${opt.val}">
+              <label for="beh_${q.id}_${idx}">
+                <strong>${opt.title}</strong>
+                ${opt.desc ? `<span>${opt.desc}</span>` : ''}
+              </label>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  initStep1();
+  initStep2();
+  initStep3();
+
+  function limitCheckboxes(name, maxCount) {
+    const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+    if (checked.length > maxCount) {
+      // Хамгийн сүүлд дарсныг буцаах
+      event.target.checked = false;
+      alert(`Дээд тал нь ${maxCount} сонголт хийх боломжтой.`);
+    }
+  }
+
+  function clearSubRow(id) {
+    document.getElementById(`subrow-${id}`).classList.remove('unanswered');
+  }
+
+  function goToScreen(step) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(`screen${step}`).classList.add('active');
+
+    const progressWrap = document.getElementById('progressWrap');
+    if (step === 0) {
+      progressWrap.style.display = 'none';
+    } else {
+      progressWrap.style.display = 'block';
+      document.getElementById('progressFill').style.width = `${(step / 4) * 100}%`;
+      for (let i = 1; i <= 4; i++) {
+        const lbl = document.getElementById(`stepLabel${i}`);
+        lbl.classList.remove('active', 'done');
+        if (i < step) lbl.classList.add('done');
+        if (i === step) lbl.classList.add('active');
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function startSurvey() {
+    const grade = document.getElementById('studentGrade').value;
+    const aimag = aimagSelect.value;
+    const soum = soumSelect.value;
+    if (!grade || !aimag || !soum) {
+      document.getElementById('err0').style.display = 'block';
+      return;
+    }
+    document.getElementById('err0').style.display = 'none';
+    goToScreen(1);
+  }
+
+  function nextStep(current) {
+    if (current === 1) {
+      let allRated = true;
+      let firstMiss = null;
+      REAL_SUBJECTS.forEach(s => {
+        const checked = document.querySelector(`input[name="lvl_${s.id}"]:checked`);
+        const row = document.getElementById(`subrow-${s.id}`);
+        if (!checked) {
+          allRated = false;
+          row.classList.add('unanswered');
+          if (!firstMiss) firstMiss = row;
+        } else {
+          row.classList.remove('unanswered');
+        }
+      });
+
+      const favCount = document.querySelectorAll('input[name="favSub"]:checked').length;
+      const eyeshCount = document.querySelectorAll('input[name="eyeshSub"]:checked').length;
+      const err1 = document.getElementById('err1');
+
+      if (!allRated || favCount === 0 || eyeshCount === 0) {
+        err1.style.display = 'block';
+        if (firstMiss) firstMiss.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      err1.style.display = 'none';
+      goToScreen(2);
+    } else if (current === 2) {
+      const hobCount = document.querySelectorAll('input[name="hobby"]:checked').length;
+      const env1 = document.querySelector('input[name="wenv_envType"]:checked');
+      const env2 = document.querySelector('input[name="wenv_stability"]:checked');
+      const err2 = document.getElementById('err2');
+
+      if (hobCount < 2 || !env1 || !env2) {
+        err2.style.display = 'block';
+        return;
+      }
+      err2.style.display = 'none';
+      goToScreen(3);
+    }
+  }
+
+  let lastResultText = '';
+
+  function finishSurvey() {
+    const missingBeh = BEHAVIOR_QUESTIONS.some(q => !document.querySelector(`input[name="beh_${q.id}"]:checked`));
+    if (missingBeh) {
+      document.getElementById('err3').style.display = 'block';
+      return;
+    }
+    document.getElementById('err3').style.display = 'none';
+
+    // Хэрэглэгчийн бодит өгөгдлийг цуглуулах
+    const subScores = {};
+    REAL_SUBJECTS.forEach(s => {
+      const val = parseInt(document.querySelector(`input[name="lvl_${s.id}"]:checked`).value, 10);
+      subScores[s.id] = val / 3; // 0.0, 0.33, 0.67, 1.0
+    });
+
+    const favSubs = Array.from(document.querySelectorAll('input[name="favSub"]:checked')).map(el => el.value);
+    const eyeshSubs = Array.from(document.querySelectorAll('input[name="eyeshSub"]:checked')).map(el => el.value);
+    const hobbies = Array.from(document.querySelectorAll('input[name="hobby"]:checked')).map(el => el.value);
+
+    const envType = document.querySelector('input[name="wenv_envType"]:checked').value;
+    const stability = document.querySelector('input[name="wenv_stability"]:checked').value;
+
+    const problemSolve = document.querySelector('input[name="beh_problemSolve"]:checked').value;
+    const teamRole = document.querySelector('input[name="beh_teamRole"]:checked').value;
+    const strength = document.querySelector('input[name="beh_strength"]:checked').value;
+    const studyHabit = document.querySelector('input[name="beh_studyHabit"]:checked').value;
+
+    // Мэргэжил бүрийн бодит тохирлыг тооцоолох
+    const evaluated = CAREERS.map(career => {
+      // 1. Хичээлийн нийцэл (0 - 1)
+      let subSum = 0;
+      let subW = 0;
+      Object.keys(career.coreSubjects).forEach(sid => {
+        const w = career.coreSubjects[sid];
+        let u = subScores[sid] || 0;
+        if (favSubs.includes(sid)) u = Math.min(1.2, u + 0.25);
+        subSum += u * w;
+        subW += w;
+      });
+      let subjectMatch = subW > 0 ? Math.min(1, subSum / subW) : 0;
+
+      // ЭШ болон дуртай хичээлийн давхцал
+      const eyeshOverlap = career.eyeshReq.filter(id => eyeshSubs.includes(id));
+      if (eyeshOverlap.length > 0) {
+        subjectMatch = Math.min(1, subjectMatch + (eyeshOverlap.length * 0.08));
+      }
+
+      // Заавал шаардлагатай суурь хичээл СУЛ (0) бол бодит торгууль болон анхааруулга
+      const weakMandatory = [];
+      career.mandatoryMin.forEach(mid => {
+        if (subScores[mid] === 0) {
+          weakMandatory.push(mid);
+          subjectMatch *= 0.62;
+        } else if (subScores[mid] <= 0.34) {
+          weakMandatory.push(mid);
+          subjectMatch *= 0.85;
+        }
+      });
+
+      // 2. Бодит сонирхол ба ажлын орчны нийцэл (0 - 1)
+      const matchedHobbies = career.hobbies.filter(h => hobbies.includes(h));
+      let hobbyScore = career.hobbies.length > 0 ? (matchedHobbies.length / Math.min(2, career.hobbies.length)) : 0;
+      hobbyScore = Math.min(1, hobbyScore);
+
+      const envMatch = career.envs.includes(envType) ? 1.0 : 0.2;
+      const stabMatch = career.stabilities.includes(stability) ? 1.0 : 0.4;
+      const interestMatch = (hobbyScore * 0.65) + (envMatch * 0.25) + (stabMatch * 0.10);
+
+      // 3. Зан төлөв ба төрөлхийн чадварын нийцэл (0 - 1)
+      let behScore = 0.25;
+      if (career.strengths.includes(strength)) behScore += 0.40;
+      if (career.behaviors.includes(problemSolve)) behScore += 0.20;
+      if (career.behaviors.includes(teamRole)) behScore += 0.15;
+      if (career.needHighStudy && studyHabit === 'practical') behScore *= 0.72;
+      behScore = Math.min(1, behScore);
+
+      // Нийт бодит оноо
+      const total = (subjectMatch * 0.42) + (interestMatch * 0.40) + (behScore * 0.18);
+      const percent = Math.min(97, Math.max(15, Math.round(total * 100)));
+
+      // Хувь хүнд зориулсан БОДИТ тайлбар бэлдэх
+      const reasons = [];
+      const matchedFavNames = favSubs
+        .filter(id => career.coreSubjects[id] || career.eyeshReq.includes(id))
+        .map(id => REAL_SUBJECTS.find(s => s.id === id).name);
+      if (matchedFavNames.length > 0) {
+        reasons.push(`Чиний дуртай хичээл (${matchedFavNames.join(', ')}) энэ мэргэжлийн гол суурьтай таарч байна.`);
+      }
+
+      if (eyeshOverlap.length > 0) {
+        const names = eyeshOverlap.map(id => EYESH_SUBJECTS.find(e => e.id === id).name);
+        reasons.push(`ЭШ өгөхөөр итгэлтэй сонгосон ${names.join(', ')} хичээл нь элсэлтийн шаардлагад шууд нийцэж байна.`);
+      }
+
+      if (matchedHobbies.length > 0) {
+        const hobNames = matchedHobbies.map(hid => REAL_HOBBIES.find(h => h.id === hid).label.replace(/^[^\s]+\s/, ''));
+        reasons.push(`Бодит сонирхол: "${hobNames.join('", "')}" гэж сонгосон нь энэ ажлын өдөр тутмын үйл ажиллагаатай яг тохирч байна.`);
+      }
+
+      if (career.strengths.includes(strength)) {
+        reasons.push(`Чиний төрөлхийн давуу тал энэ салбарт өндөр үнэлэгддэг.`);
+      }
+
+      if (reasons.length === 0) {
+        reasons.push(`Чиний бусад хариулт болон ажлын орчны сонголттой ерөнхий чиглэлээрээ ойр байна.`);
+      }
+
+      // Анхаарах бодит зүйлс
+      const warnings = [];
+      if (weakMandatory.length > 0) {
+        const wNames = weakMandatory.map(id => REAL_SUBJECTS.find(s => s.id === id).name);
+        warnings.push(`Энэ мэргэжлийн гол суурь болох ${wNames.join(', ')} хичээлийг чи "Сул" эсвэл "Дундаж" гэж үнэлсэн байна. Хэрэв үүнийг сонговол одооноос түлхүү бэлдэх шаардлагатай.`);
+      }
+      if (career.needHighStudy && studyHabit === 'practical') {
+        warnings.push(`Энэ мэргэжил нь олон жил тасралтгүй онол сурах тэвчээр шаарддаг гэдгийг бодолцоорой.`);
+      }
+
+      return { ...career, percent, reasons, warnings };
+    });
+
+    evaluated.sort((a, b) => b.percent - a.percent);
+    renderResults(evaluated.slice(0, 3), { favSubs, eyeshSubs, hobbies, studyHabit, strength });
+    goToScreen(4);
+  }
+
+  function renderResults(topCareers, userCtx) {
+    const name = document.getElementById('studentName').value.trim();
+    const grade = document.getElementById('studentGrade').value;
+    const aimag = aimagSelect.value;
+    const soum = soumSelect.value;
+    const soumLabel = aimag === 'Улаанбаатар хот' ? soum : `${soum} сум`;
+    const greeting = name ? name : 'Эрхэм сурагч';
+
+    const favNames = userCtx.favSubs.map(id => REAL_SUBJECTS.find(s => s.id === id).name);
+    const eyeshNames = userCtx.eyeshSubs.map(id => EYESH_SUBJECTS.find(s => s.id === id).name);
+
+    document.getElementById('resultBanner').innerHTML = `
+      <h2>${greeting} (${grade}) — Чиний бодит дүгнэлт 🎯</h2>
+      <p>Хэт ерөнхий таамаг бус, чиний яг сонгосон дуртай хичээл, ЭШ өгөх хичээл, бодит сонирхол ба зан төлөв дээр тулгуурлан хамгийн бодитой 3 чиглэлийг гаргалаа.</p>
+      <div class="pill-row">
+        <span class="banner-pill">📍 ${aimag}, ${soumLabel}</span>
+        <span class="banner-pill">⭐ Дуртай хичээл: ${favNames.join(', ')}</span>
+        <span class="banner-pill">📝 ЭШ хичээл: ${eyeshNames.join(', ')}</span>
+      </div>
+    `;
+
+    document.getElementById('careerResults').innerHTML = topCareers.map((c, i) => `
+      <div class="career-card ${i === 0 ? 'top-1' : ''}">
+        <div class="career-header">
+          <div>
+            <span class="career-rank">${i === 0 ? '🥇 Хамгийн бодит тохирол' : (i === 1 ? '🥈 2-р сонголт' : '🥉 3-р сонголт')}</span>
+            <h4 class="career-title">${c.title}</h4>
+          </div>
+          <div class="match-pill">${c.percent}% тохирно</div>
+        </div>
+
+        <p class="career-desc">${c.desc}</p>
+
+        <div class="reason-box">
+          <strong>✅ Яг чиний хариулт дээр үндэслэсэн шалтгаан:</strong>
+          <ul>
+            ${c.reasons.map(r => `<li>${r}</li>`).join('')}
+          </ul>
+        </div>
+
+        ${c.warnings.length > 0 ? `
+          <div class="warn-box">
+            <strong>⚠️ Шударга анхааруулга:</strong> ${c.warnings.join(' ')}
+          </div>
+        ` : ''}
+
+        <div class="career-meta">
+          <div>
+            <strong>📝 ЭШ-ийн бодит шаардлага:</strong>
+            <span>${c.eyeshText}</span>
+          </div>
+          <div>
+            <strong>💼 Монголын зах зээлийн бодит байдал (2026):</strong>
+            <span>${c.marketReality}</span>
+          </div>
+        </div>
+
+        <div class="uni-box">
+          <div class="uni-box-title">🏛️ Суралцахад тохиромжтой Монголын их, дээд сургууль / коллеж:</div>
+          <ul class="uni-list">
+            ${c.universities.map(u => `<li>${u}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `).join('');
+
+    // Орон нутаг
+    const regionalDiv = document.getElementById('regionalAdvice');
+    const tips = REGIONAL_UNI_TIPS[aimag];
+    if (aimag === 'Улаанбаатар хот') {
+      regionalDiv.innerHTML = `
+        <div class="regional-box">
+          <h3>📍 Байршлын зөвлөмж: ${aimag} (${soumLabel})</h3>
+          <p>${tips[0]}</p>
+        </div>
+      `;
+    } else if (tips) {
+      regionalDiv.innerHTML = `
+        <div class="regional-box">
+          <h3>📍 Чиний амьдардаг аймаг (${aimag}, ${soumLabel})-д ойр суралцах боломжууд</h3>
+          <p>Улаанбаатар хотоос гадна өөрийн аймагтаа дараах сургууль, коллежийг судалж болно:</p>
+          <ul>${tips.map(t => `<li>${t}</li>`).join('')}</ul>
+          <p style="margin-top:8px;">💡 <em>Зөвлөгөө: Хэрэв Улаанбаатарт суралцах бол Боловсролын Зээлийн Сангийн тэтгэлэг, оюутны дотуур байр, мөн аймгийн орон нутгийн тэтгэлгүүдийг эртнээс судлаарай.</em></p>
+        </div>
+      `;
+    } else {
+      regionalDiv.innerHTML = `
+        <div class="regional-box">
+          <h3>📍 Орон нутгаас суралцах зөвлөмж (${aimag}, ${soumLabel})</h3>
+          <p>Таны аймагтай ойр зэргэлдээ аймгуудын (Дархан-Уул, Орхон, Ховд, Завхан, Дорнод, Архангай, Говь-Алтай, Дорноговь) улсын сургуулийн салбарууд болон Улаанбаатар хотын их сургуулиудад оюутны дотуур байр, Боловсролын Зээлийн Сангийн дэмжлэгтэйгээр суралцах боломжтой.</p>
+        </div>
+      `;
+    }
+
+    // Бодит суурь ба дараагийн алхам
+    const hobbyLabels = userCtx.hobbies.map(hid => REAL_HOBBIES.find(h => h.id === hid).label);
+    document.getElementById('userBasisSummary').innerHTML = `
+      <p style="margin-bottom:8px;"><strong>⭐ Дуртай хичээлүүд:</strong> ${favNames.join(', ')}</p>
+      <p style="margin-bottom:8px;"><strong>📝 ЭШ өгөх хичээлүүд:</strong> ${eyeshNames.join(', ')}</p>
+      <p style="margin-bottom:8px;"><strong>🛠️ Сонгосон сонирхол:</strong></p>
+      <div class="tag-list">
+        ${hobbyLabels.map(l => `<span class="tag">${l}</span>`).join('')}
+      </div>
+    `;
+
+    const isYoung = grade.includes('6–8') || grade.includes('9');
+    const practicalTip = userCtx.studyHabit === 'practical'
+      ? '• Чи онолоос илүү практик ур чадвар хурдан эзэмших сонирхолтой тул <strong>ШУТИС-КООСЭН, Шинэ Монгол КООСЭН эсвэл Политехник коллежүүдийг</strong> (9-р ангиас ч элсдэг) заавал судлаарай.'
+      : '• Их сургуульд орохын өмнө өөрийн сонирхсон чиглэлийн (жишээ нь эмч, инженер, код, дизайн) хүнтэй 1 өдөр ярилцаж эсвэл YouTube-ээр "A day in the life of..." бичлэг үзэж бодит ажлыг нь мэдрээрэй.';
+
+    document.getElementById('nextStepTips').innerHTML = `
+      <ul style="padding-left:18px; display:grid; gap:8px;">
+        <li><strong>Суурь хичээл ба ЭШ:</strong> ${isYoung ? 'Одооноос' : 'Яаралтай'} <strong>${topCareers[0].eyeshText}</strong> дээр төвлөрч давтлага хий. Заавал өгдөг Монгол хэл бичгийн шалгалт (МХБШ)-аа мөн бэлдээрэй.</li>
+        <li>${practicalTip}</li>
+        <li><strong>Тэтгэлэг судлах:</strong> Сонгосон мэргэжил чинь Засгийн газрын "Тэргүүлэх эрэлттэй мэргэжил" (Багш, Сувилахуй, Инженер, ХАА гэх мэт) ангилалд ордог эсэхийг Боловсролын Зээлийн Сангаас шалгаарай.</li>
+      </ul>
+    `;
+
+    lastResultText =
+      `БОДИТ МЭРГЭЖИЛ СОНГОЛТЫН ҮР ДҮН\n` +
+      `Сурагч: ${greeting} (${grade})\n` +
+      `Хаяг: ${aimag}, ${soumLabel}\n` +
+      `Дуртай хичээл: ${favNames.join(', ')}\n` +
+      `ЭШ өгөх хичээл: ${eyeshNames.join(', ')}\n\n` +
+      `ТОХИРСОН 3 МЭРГЭЖИЛ:\n` +
+      topCareers.map((c, idx) =>
+        `${idx + 1}. ${c.title} (${c.percent}%)\n   - ЭШ: ${c.eyeshText}\n   - Шалтгаан: ${c.reasons.join(' ')}\n   - Сургууль: ${c.universities[0]}`
+      ).join('\n\n');
+  }
+
+  function copySummary() {
+    if (!lastResultText) return;
+    navigator.clipboard.writeText(lastResultText).then(() => {
+      const toast = document.getElementById('copyToast');
+      toast.style.display = 'inline';
+      setTimeout(() => { toast.style.display = 'none'; }, 2500);
+    });
+  }
+
+  function resetSurvey() {
+    document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(el => el.checked = false);
+    document.querySelectorAll('.subject-row').forEach(r => r.classList.remove('unanswered'));
+    document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
+    document.getElementById('studentName').value = '';
+    document.getElementById('studentGrade').value = '';
+    aimagSelect.value = '';
+    updateSoums();
+    goToScreen(0);
+  }
+</script>
+</body>
+</html>
